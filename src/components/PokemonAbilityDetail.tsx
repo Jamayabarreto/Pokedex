@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 
+interface EffectEntry {
+  effect: string;
+  language: { name: string };
+}
+
 interface Ability {
   name: string;
-  effect_entries: { effect: string }[];
+  effect_entries: EffectEntry[];
 }
 
 const PokemonAbilityDetail: React.FC = () => {
@@ -26,12 +31,15 @@ const PokemonAbilityDetail: React.FC = () => {
     return <div className="text-center text-black">Loading...</div>;
   }
 
+  // Filtrar la entrada de efecto en español
+  const spanishEffect = ability.effect_entries.find(
+    (entry) => entry.language.name === "en"
+  );
+
   return (
     <div className="ability-detail-container">
       <h2 className="text-3xl font-bold capitalize">Habilidad: {ability.name}</h2>
-      <p className="mt-2">{ability.effect_entries[0].effect}</p>
-
-      
+      <p className="mt-2">{spanishEffect?.effect || "Descripción no disponible en español."}</p>
     </div>
   );
 };
